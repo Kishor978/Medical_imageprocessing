@@ -4,7 +4,7 @@ This repository demostrates the medical image processing according to the Task:1
 ## Overview of task. 
 This  project  focuses  on  bone  segmentation  in  3D  CT  images  volume.  Task  is  to  process  a  specific  
 bone region as outlined in the task description and ultimately identify a key anatomical landmark. 
-![task](results\image.png)
+![task](results/image.png)
 
 
 ## Data
