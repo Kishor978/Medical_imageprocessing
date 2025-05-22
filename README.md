@@ -1,10 +1,63 @@
 # Medical_Image_Processing
 This repository demostrates the medical image processing according to the Task:1 'Image processing' for the selection process of Research assistant(RA) at Naamii.
+## Installation
+
+1. Clone the repository
+2. Create a virtual environment
+3. Install dependencies:
+```sh
+pip install -r requirements.txt
+```
+
+## Project Structure
+
+```
+.
+├── data/                     # Input CT scan data
+├── results/  
+|   |-                # Output results and visualizations
+├── src/                     # Source code
+│   ├── segement.py         # Bone segmentation implementation
+│   ├── contour_expansion.py # Contour expansion logic
+│   ├── randomized_contour.py # Randomized contour adjustments
+│   └── landmarks_detection_tibia.py # Landmark detection
+└── utils/                   # Utility functions
+    ├── nifti_file_handling.py # NIfTI file operations
+    ├── visualization.py      # Visualization tools
+    ├── animation.py         # Animation generation
+    └── voxels_operation.py  # Voxel manipulation
+```
+## Usage
+
+Run the main tasks using the following commands:
+
+```sh
+# Task 1.1 - Bone Segmentation
+python src/segement.py
+
+# Task 1.2 - Contour Expansion
+python src/contour_expansion.py
+
+# Task 1.3 - Randomized Contour
+python src/randomized_contour.py
+
+# Task 1.4 - Landmark Detection
+python src/landmarks_detection_tibia.py
+```
+## Results
+
+The processing results are saved in the `results/` directory:
+- Task 1.1: Bone segmentation masks
+- Task 1.2: Expanded contour masks
+- Task 1.3: Randomized contour masks
+- Task 1.4: Landmark coordinates and visualization
+    - Submission: Final Submission of the task 1.4
 
 ## Overview of task. 
 This  project  focuses  on  bone  segmentation  in  3D  CT  images  volume.  Task  is  to  process  a  specific  
 bone region as outlined in the task description and ultimately identify a key anatomical landmark. 
 ![task](results/image.png)
+
 
 
 ## Data
@@ -182,3 +235,22 @@ not  required  to  generate  this  image  as  part  of  your  submission.  Our  
 visualization. 
 - Submit the coordinates of these points for evaluation we will compare your results with the ground 
 truth. 
+
+### Solution's Explaination
+**Coordinate Extraction**
+- Gets coordinates of all mask points using np.where(mask > 0)
+- Converts to homogeneous coordinates for transformation
+
+**World Space Transformation**
+- Transforms voxel coordinates to real-world coordinates using the affine matrix
+- This ensures measurements are in millimeters, not voxels
+
+**Lowest Points Detection**
+- Finds points within 5mm of the absolute lowest point
+- Separates points into medial and lateral based on x-coordinate median
+- Returns the lowest point from each region
+
+**Mask Generation**
+- Gets original masks through bone segmentation
+- Creates 2mm and 4mm expanded masks
+- Generates two randomized masks

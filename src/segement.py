@@ -207,7 +207,7 @@ if __name__ == "__main__":
     # Based on the histogram, a threshold of 200-300 HU should work well for bone
     bone_threshold = 200  # HU threshold for bone segmentation
     min_component_size = 10000  # Minimum size of connected components to keep
-    morph_iterations = 1  # Number of iterations for morphological operations
+    morph_iterations = 2  # Number of iterations for morphological operations
     
     # Run the bone segmentation
     femur_mask, tibia_mask, combined_mask, affine, header = bone_segmentation(

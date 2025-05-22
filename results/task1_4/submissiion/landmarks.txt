@@ -1,0 +1,20 @@
+
+ORIGINAL MASK:
+Medial point: (np.float64(-107.77357339859009), np.float64(17.382728099822998), np.float64(-474.5))
+Lateral point: (np.float64(-120.81068813800812), np.float64(26.943278908729553), np.float64(-474.5))
+
+EXPANDED_2MM MASK:
+Medial point: (np.float64(-107.77357339859009), np.float64(17.382728099822998), np.float64(-472.5))
+Lateral point: (np.float64(-120.81068813800812), np.float64(26.943278908729553), np.float64(-472.5))
+
+EXPANDED_4MM MASK:
+Medial point: (np.float64(-107.77357339859009), np.float64(17.382728099822998), np.float64(-470.5))
+Lateral point: (np.float64(-120.81068813800812), np.float64(26.943278908729553), np.float64(-470.5))
+
+RANDOM_1 MASK:
+Medial point: (np.float64(-105.16615045070648), np.float64(19.121010065078735), np.float64(-472.5))
+Lateral point: (np.float64(-120.81068813800812), np.float64(29.55070185661316), np.float64(-472.5))
+
+RANDOM_2 MASK:
+Medial point: (np.float64(-105.16615045070648), np.float64(19.121010065078735), np.float64(-472.5))
+Lateral point: (np.float64(-120.81068813800812), np.float64(29.55070185661316), np.float64(-472.5))
