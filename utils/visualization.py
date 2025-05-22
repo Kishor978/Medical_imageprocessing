@@ -249,3 +249,92 @@ def visualize_expansion_comparison(original_data, original_mask, expanded_mask, 
     
     plt.tight_layout()
     plt.show()
+
+def visualize_randomized_comparison(original_data, original_mask, expanded_mask, 
+                                 randomized_masks, mask_name, num_slices=5, axis=2):
+    """
+    Visualize the comparison between original, expanded, and randomized masks.
+    
+    Args:
+        original_data: Original CT scan data
+        original_mask: Original binary mask
+        expanded_mask: Expanded binary mask
+        randomized_masks: List of randomized binary masks
+        mask_name: Name of the mask (for titles)
+        num_slices: Number of slices to visualize
+        axis: Axis along which to take slices (0=sagittal, 1=coronal, 2=axial)
+    """
+    # Get the size of the data along the specified axis
+    axis_size = original_data.shape[axis]
+    
+    # Calculate the indices of the slices to visualize
+    indices = np.linspace(0, axis_size - 1, num_slices, dtype=int)
+    
+    # Create a figure with subplots (original + expanded + randomized masks)
+    num_rows = 2 + len(randomized_masks)
+    fig, axes = plt.subplots(num_rows, num_slices, figsize=(15, 3 * num_rows))
+    
+    # Axis labels
+    axis_names = ['Sagittal', 'Coronal', 'Axial']
+    
+    # Colors for different contours
+    colors = ['red', 'blue', 'green', 'orange', 'purple', 'cyan', 'magenta']
+    
+    # Loop through the indices and visualize each slice
+    for i, idx in enumerate(indices):
+        # Take slices along the specified axis
+        if axis == 0:
+            original_slice = original_data[idx, :, :]
+            original_mask_slice = original_mask[idx, :, :]
+            expanded_mask_slice = expanded_mask[idx, :, :]
+            randomized_slices = [mask[idx, :, :] for mask in randomized_masks]
+        elif axis == 1:
+            original_slice = original_data[:, idx, :]
+            original_mask_slice = original_mask[:, idx, :]
+            expanded_mask_slice = expanded_mask[:, idx, :]
+            randomized_slices = [mask[:, idx, :] for mask in randomized_masks]
+        else:  # axis == 2
+            original_slice = original_data[:, :, idx]
+            original_mask_slice = original_mask[:, :, idx]
+            expanded_mask_slice = expanded_mask[:, :, idx]
+            randomized_slices = [mask[:, :, idx] for mask in randomized_masks]
+        
+        # Normalize original slice for better visualization
+        norm_slice = np.clip(original_slice, -300, 1500)  # Clip to bone window
+        norm_slice = (norm_slice - np.min(norm_slice)) / (np.max(norm_slice) - np.min(norm_slice))
+        
+        # Display the original mask
+        axes[0, i].imshow(norm_slice.T, cmap='bone', origin='lower')
+        if np.any(original_mask_slice):
+            axes[0, i].contour(original_mask_slice.T, colors='red', linewidths=2, origin='lower')
+        axes[0, i].set_title(f'{axis_names[axis]} Slice {idx} - Original {mask_name}')
+        axes[0, i].axis('off')
+        
+        # Display the expanded mask
+        axes[1, i].imshow(norm_slice.T, cmap='bone', origin='lower')
+        if np.any(original_mask_slice):
+            axes[1, i].contour(original_mask_slice.T, colors='red', linewidths=1, origin='lower', alpha=0.7)
+        if np.any(expanded_mask_slice):
+            axes[1, i].contour(expanded_mask_slice.T, colors='blue', linewidths=2, origin='lower')
+        axes[1, i].set_title(f'{axis_names[axis]} Slice {idx} - Expanded {mask_name}')
+        axes[1, i].axis('off')
+        
+        # Display the randomized masks
+        for j, randomized_slice in enumerate(randomized_slices):
+            row_idx = 2 + j
+            axes[row_idx, i].imshow(norm_slice.T, cmap='bone', origin='lower')
+            if np.any(original_mask_slice):
+                axes[row_idx, i].contour(original_mask_slice.T, colors='red', linewidths=1, 
+                                       origin='lower', alpha=0.5)
+            if np.any(expanded_mask_slice):
+                axes[row_idx, i].contour(expanded_mask_slice.T, colors='blue', linewidths=1, 
+                                       origin='lower', alpha=0.5)
+            if np.any(randomized_slice):
+                color_idx = j % len(colors)
+                axes[row_idx, i].contour(randomized_slice.T, colors=colors[color_idx], 
+                                       linewidths=2, origin='lower')
+            axes[row_idx, i].set_title(f'{axis_names[axis]} Slice {idx} - Randomized {mask_name} {j+1}')
+            axes[row_idx, i].axis('off')
+    
+    plt.tight_layout()
+    plt.show()

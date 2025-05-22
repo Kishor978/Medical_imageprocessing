@@ -4,7 +4,7 @@ from scipy import ndimage
 import matplotlib.pyplot as plt
 from scipy.ndimage import binary_fill_holes
 from matplotlib.animation import FuncAnimation
-from utils import load_ct_data, save_nifti,visualize_segmentation,create_segmentation_animation
+from utils import load_ct_data, save_nifti,visualize_segmentation,create_segmentation_animation,apply_morphological_operations
 
 def preprocess_volume(data, sigma=1.0):
     """
@@ -116,25 +116,6 @@ def separate_femur_tibia(bone_mask, min_size=1000):
     else:
         print("No valid components found.")
         return np.zeros_like(bone_mask), np.zeros_like(bone_mask)
-
-def apply_morphological_operations(mask, iterations=2):
-    """
-    Apply morphological operations to clean up the mask.
-    
-    Args:
-        mask: Binary mask
-        iterations: Number of iterations for morphological operations
-        
-    Returns:
-        cleaned_mask: Cleaned binary mask
-    """
-    # Apply closing to fill small holes
-    cleaned_mask = ndimage.binary_closing(mask, iterations=iterations)
-    
-    # Apply opening to remove small isolated regions
-    cleaned_mask = ndimage.binary_opening(cleaned_mask, iterations=iterations)
-    
-    return cleaned_mask
 
 def bone_segmentation(input_path, output_dir, bone_threshold=300, min_component_size=10000, morph_iterations=2, visualize=True):
     """

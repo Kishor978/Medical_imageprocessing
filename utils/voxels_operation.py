@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.ndimage import distance_transform_edt
 
 def get_voxel_spacing(affine):
     """
@@ -29,3 +30,24 @@ def mm_to_voxels(distance_mm, voxel_spacing):
     """
     voxels = distance_mm / voxel_spacing
     return voxels
+
+def create_distance_field(mask, voxel_spacing):
+    """
+    Create a distance field from the mask boundary.
+    
+    Args:
+        mask: Binary mask
+        voxel_spacing: Array of voxel dimensions in mm [x, y, z]
+        
+    Returns:
+        distance_field: Distance transform in millimeters
+    """
+    # Create distance transform (in voxels)
+    distance_voxels = distance_transform_edt(mask)
+    
+    # Convert to millimeters using the minimum voxel spacing
+    # This gives us an approximation of the real-world distance
+    min_voxel_size = np.min(voxel_spacing)
+    distance_mm = distance_voxels * min_voxel_size
+    
+    return distance_mm
