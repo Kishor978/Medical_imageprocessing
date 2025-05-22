@@ -181,3 +181,71 @@ def visualize_segmentation(original_data, femur_mask, tibia_mask, num_slices=5, 
         print(f"Figure saved to: {save_path}")
     
     plt.show()
+    
+def visualize_expansion_comparison(original_data, original_mask, expanded_mask, mask_name, num_slices=5, axis=2):
+    """
+    Visualize the comparison between original and expanded masks.
+    
+    Args:
+        original_data: Original CT scan data
+        original_mask: Original binary mask
+        expanded_mask: Expanded binary mask
+        mask_name: Name of the mask (for titles)
+        num_slices: Number of slices to visualize
+        axis: Axis along which to take slices (0=sagittal, 1=coronal, 2=axial)
+    """
+    # Get the size of the data along the specified axis
+    axis_size = original_data.shape[axis]
+    
+    # Calculate the indices of the slices to visualize
+    indices = np.linspace(0, axis_size - 1, num_slices, dtype=int)
+    
+    # Create a figure with subplots
+    fig, axes = plt.subplots(3, num_slices, figsize=(15, 9))
+    
+    # Axis labels
+    axis_names = ['Sagittal', 'Coronal', 'Axial']
+    
+    # Loop through the indices and visualize each slice
+    for i, idx in enumerate(indices):
+        # Take slices along the specified axis
+        if axis == 0:
+            original_slice = original_data[idx, :, :]
+            original_mask_slice = original_mask[idx, :, :]
+            expanded_mask_slice = expanded_mask[idx, :, :]
+        elif axis == 1:
+            original_slice = original_data[:, idx, :]
+            original_mask_slice = original_mask[:, idx, :]
+            expanded_mask_slice = expanded_mask[:, idx, :]
+        else:  # axis == 2
+            original_slice = original_data[:, :, idx]
+            original_mask_slice = original_mask[:, :, idx]
+            expanded_mask_slice = expanded_mask[:, :, idx]
+        
+        # Normalize original slice for better visualization
+        norm_slice = np.clip(original_slice, -300, 1500)  # Clip to bone window
+        norm_slice = (norm_slice - np.min(norm_slice)) / (np.max(norm_slice) - np.min(norm_slice))
+        
+        # Display the original slice
+        axes[0, i].imshow(norm_slice.T, cmap='bone', origin='lower')
+        axes[0, i].set_title(f'{axis_names[axis]} Slice {idx} - Original')
+        axes[0, i].axis('off')
+        
+        # Display the original mask
+        axes[1, i].imshow(norm_slice.T, cmap='bone', origin='lower')
+        if np.any(original_mask_slice):
+            axes[1, i].contour(original_mask_slice.T, colors='red', linewidths=1, origin='lower')
+        axes[1, i].set_title(f'{axis_names[axis]} Slice {idx} - Original {mask_name}')
+        axes[1, i].axis('off')
+        
+        # Display the expanded mask
+        axes[2, i].imshow(norm_slice.T, cmap='bone', origin='lower')
+        if np.any(original_mask_slice):
+            axes[2, i].contour(original_mask_slice.T, colors='red', linewidths=1, origin='lower', alpha=0.7)
+        if np.any(expanded_mask_slice):
+            axes[2, i].contour(expanded_mask_slice.T, colors='blue', linewidths=1, origin='lower')
+        axes[2, i].set_title(f'{axis_names[axis]} Slice {idx} - Expanded {mask_name}')
+        axes[2, i].axis('off')
+    
+    plt.tight_layout()
+    plt.show()
