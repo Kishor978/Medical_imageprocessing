@@ -19,9 +19,9 @@ The provide data is in NIfTI (Neuroimaging Informatics Technology Initiative) is
 - Value Range: Range: [-3024.0, 1769.0] - This appears to be in Hounsfield Units (HU), which is standard for CT scans
 Bone typically has values above 300-400 HU, while soft tissue is generally between -100 and 100 HU
 ### Axial view animation
-![axial view](results\raw_images\ct_scan_animation.gif)
+![axial view](results/raw_images/ct_scan_animation.gif)
 ### MIP (Maximum Intensity Projection)
-![MIP Images](results\raw_images\Figure_1.png)
+![MIP Images](results/raw_images/Figure_1.png)
 
 From the MIP Images:
 
@@ -30,7 +30,7 @@ From the MIP Images:
 - The knee joint is clearly visible where they meet
 - The circular view in the axial MIP indicates a good cross-sectional capture of the joint
 ### Histogram of voxel intensities
-![voxel intensities](results\raw_images\voxel_intensities.png)
+![voxel intensities](results/raw_images/voxel_intensities.png)
 
 From the Histogram (Image 2):
 
@@ -83,10 +83,10 @@ Label connected components in the bone mask.
 **Segmentation Output**
 1. **Coronal View**
 
-![Coronal](results\task1_1\coronal.png)
+![Coronal](results/task1_1/coronal.png)
 
 2. **Animation** wait for slice around 250
-![Coronal _animation](results\task1_1\animation_axial.gif)
+![Coronal _animation](results/task1_1/animation_axial.gif)
 
 
 ## Task 1.2 – Contour Expansion 
@@ -122,14 +122,14 @@ parameter.
 ### Outputs
 **Axial view**
 
-![Axial view](results\task1_2\axial.png)
+![Axial view](results/task1_2/axial.png)
 **Coronal View of Femur**
 
-![Coronal View of Femur](results\task1_2\cornol.png)
+![Coronal View of Femur](results/task1_2/cornol.png)
 
 **Coronal View of Tibia**
 
-![Coronal View of Tibia](results\task1_2\coronal_tebia.png)
+![Coronal View of Tibia](results/task1_2/coronal_tebia.png)
 
 ## Task 1.3 – Randomized Contour Adjustment 
 The third task involves randomizing the expanded segmented mask such that: 
@@ -158,15 +158,15 @@ The third task involves randomizing the expanded segmented mask such that:
 - Clear Differentiation: Uses different colors for easy identification of different masks
 ### Outputs
 **Axial view**
-![Axial view](results\task1_3\Axial_femur.png)
+![Axial view](results/task1_3/Axial_femur.png)
 
 **Coronal View of Femur**
 
-![Coronal View of Femur](results\task1_3\coronal_femur.png)
+![Coronal View of Femur](results/task1_3/coronal_femur.png)
 
 **Coronal View of Tibia**
 
-![Coronal View of Tibia](results\task1_3\coronl_tibia.png)
+![Coronal View of Tibia](results/task1_3/coronl_tibia.png)
 
 ## Task 1.4 – Landmark Detection on Tibia 
 The final task focuses on the tibia. You are required to: 
